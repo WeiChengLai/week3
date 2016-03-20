@@ -5,17 +5,17 @@ public class HW {
     
     public static void main(String[] args) throws IOException {
         int op;
-        String character = new String();
+        String search = new String();
         String put = new String();
         String []after = new String[100];
         HashMap hm = new HashMap();
         
-		//write file (first)
-        FileWriter fwriter = new FileWriter("char.txt",true);
+        //write file (first)
+        FileWriter fwriter = new FileWriter("string.txt",true);
         fwriter.flush();
         fwriter.close();
         //read file
-        FileReader freader = new FileReader("char.txt");
+        FileReader freader = new FileReader("string.txt");
         BufferedReader breader = new BufferedReader(freader);
         while(breader.ready())
         {
@@ -25,13 +25,13 @@ public class HW {
         freader.close();
         while(true)
         {
-            System.out.print("1)input string 2)the number of character which appear  -1)End: ");
+            System.out.print("1)input sentence 2)the number of string which appear  -1)End: ");
             Scanner option = new Scanner(System.in);
             op = option.nextInt();
             if(op==-1)
             {
                 //write file
-                FileWriter fw = new FileWriter("char.txt",true);
+                FileWriter fw = new FileWriter("string.txt",true);
                 for (Object key : hm.keySet())
                 {
                     fw.write(key+"\n"+hm.get(key)+"\n");
@@ -42,39 +42,48 @@ public class HW {
             }
             else if(op==1)
             {
-                System.out.print("Enter a string: ");
+                System.out.print("Enter a sentence: ");
                 Scanner input = new Scanner(System.in);
                 put = input.nextLine().toLowerCase();
                 after = put.split("[\n|\t|\\,|\\.|\\!|\\?|\\s]+");
                 for(int i = 0; i < after.length; i++)
                 {
-                    for(int j = 0; j < after[i].length(); j++)//look for a character
+                    boolean isNum = false;
+                    for(int j =0; j < after[i].length();j++)
                     {
-                        if(hm.get(after[i].charAt(j)) == null)
+                        if(Character.isDigit(after[i].charAt(j)))
                         {
-                            hm.put(after[i].charAt(j), 1);
+                            isNum = true;
+                            continue;
+                        }
+                    }
+                    if(isNum!=true)
+                    {
+                        if(hm.get(after[i]) == null)
+                        {
+                            hm.put(after[i], 1);
                         }
                         else
                         {
-                            int n = Integer.parseInt(hm.get(after[i].charAt(j)).toString());
-                            hm.put(after[i].charAt(j), n+1);
+                            int n = Integer.parseInt(hm.get(after[i]).toString());
+                            hm.put(after[i], n+1);
                         }
                     }
                 }
             }
             else if(op==2)
             {
-                System.out.print("Enter a character: ");
+                System.out.print("Enter a string: ");
                 Scanner c = new Scanner(System.in);
-                character = c.nextLine();
-                if(hm.get(character) == null)
+                search = c.nextLine();
+                if(hm.get(search) == null)
                 {
-                    System.out.println("Can't find character "+character);
+                    System.out.println("Can't find string "+search);
                 }
                 else
                 {
-                    System.out.println("character: "+character);
-                    System.out.println("the number of "+character+" : "+hm.get(character));
+                    System.out.println("character: "+search);
+                    System.out.println("the number of "+search+" : "+hm.get(search));
                 }
             }
             System.out.println();
